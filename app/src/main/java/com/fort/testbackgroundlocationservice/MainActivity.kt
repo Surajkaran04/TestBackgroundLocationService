@@ -1,30 +1,25 @@
 package com.fort.testbackgroundlocationservice
 
 import android.Manifest
-import android.Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
 import android.app.AppOpsManager
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.PowerManager
 import android.os.Process
 import android.provider.Settings
 import android.util.Log
-import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.fort.testbackgroundlocationservice.databinding.ActivityMainBinding
-import java.util.prefs.Preferences
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,6 +37,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
+//        val serviceIntent = Intent(this@MainActivity, BackgroundService::class.java)
+//        stopService(serviceIntent)
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if ( Build.VERSION.SDK_INT >= 23){
                 if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) !=
@@ -55,8 +55,6 @@ class MainActivity : AppCompatActivity() {
         pref = applicationContext.getSharedPreferences("location_background", MODE_PRIVATE)
 
 
-        val serviceIntent = Intent(this@MainActivity, BackgroundService::class.java)
-        startService(serviceIntent)
 
         //is background service
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -76,6 +74,10 @@ class MainActivity : AppCompatActivity() {
             }
             tvBattery.setOnClickListener {
                 actionOnBatteryOptimizations()
+
+
+                val serviceIntent = Intent(this@MainActivity, BackgroundService::class.java)
+                startService(serviceIntent)
             }
         }
 
